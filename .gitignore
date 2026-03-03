@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# local env overrides
+.env
+.env.local
+
+# k6 outputs (chunk 3+)
+results/
+*.html
+
+# logs
+*.log

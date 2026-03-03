@@ -1,12 +1,14 @@
 # performance-testing-demo
 
-Chunk 1 sets up a local Dockerized TeaStore instance as the target system for later k6 tests.
+Chunk 1 sets up a local dockerised TeaStore instance as the target system for later k6 tests.
+Chunk 2 adds the k6 project skeleton and runner commands.
 
 ## Prerequisites
 
 - Docker Desktop (or Docker Engine + Compose v2)
+- k6 CLI ([https://grafana.com/docs/k6/latest/set-up/install-k6/](https://grafana.com/docs/k6/latest/set-up/install-k6/))
 
-## Quick Start
+## TeaStore Quick Start
 
 1. Copy env defaults:
 
@@ -29,6 +31,20 @@ docker compose -f docker-compose.teastore.yml ps
 4. Open TeaStore:
 
 - http://localhost:8080/tools.descartes.teastore.webui/
+
+## k6 Skeleton Commands
+
+The scenario files are added in chunk 3. For now, command wiring is in place.
+
+```bash
+make k6-smoke
+make k6-load
+make k6-stress
+make k6-spike
+make k6-clear
+```
+
+`k6-clear` removes local result artifacts under `results/`.
 
 ## Stop and Cleanup
 

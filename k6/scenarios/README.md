@@ -1,9 +1,7 @@
 # k6 scenarios
 
-Scenario scripts are added in chunk 3.
-
-Expected files:
-- smoke.js
-- load.js
-- stress.js
-- spike.js
+Current status:
+- smoke.js: implemented
+- load.js: planned (chunk 4)
+- stress.js: planned (chunk 4)
+- spike.js: planned (chunk 4)

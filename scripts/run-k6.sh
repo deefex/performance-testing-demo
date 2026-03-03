@@ -17,6 +17,12 @@ case "${SCENARIO}" in
     echo "Cleared ${OUTPUT_DIR}/"
     ;;
   smoke|load|stress|spike)
+    if ! command -v k6 >/dev/null 2>&1; then
+      echo "k6 is not installed or not on PATH."
+      echo "Install: https://grafana.com/docs/k6/latest/set-up/install-k6/"
+      exit 1
+    fi
+
     SCRIPT="k6/scenarios/${SCENARIO}.js"
     if [[ ! -f "${SCRIPT}" ]]; then
       echo "Missing ${SCRIPT}. Add scenarios in chunk 3."

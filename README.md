@@ -3,6 +3,7 @@
 Chunk 1 sets up a local dockerised TeaStore instance as the target system for later k6 tests.
 Chunk 2 adds the k6 project skeleton and runner commands.
 Chunk 3 adds the first working scenario: smoke.
+Chunk 4 adds load, stress, and spike scenarios.
 
 ## Prerequisites
 
@@ -35,19 +36,25 @@ docker compose -f docker-compose.teastore.yml ps
 
 ## k6 Commands
 
-Working now:
-
 ```bash
 make k6-smoke
-make k6-clear
-```
-
-Planned in next chunk:
-
-```bash
 make k6-load
 make k6-stress
 make k6-spike
+make k6-clear
+```
+
+Environment overrides for load test profile:
+
+```bash
+VUS=20 DURATION=5m make k6-load
+```
+
+Default `BASE_URL` is `http://localhost:8080/tools.descartes.teastore.webui`.
+Override with:
+
+```bash
+BASE_URL=http://localhost:8081/tools.descartes.teastore.webui make k6-smoke
 ```
 
 `k6-clear` removes local result artifacts under `results/`.

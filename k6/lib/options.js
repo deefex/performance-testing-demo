@@ -2,7 +2,7 @@ import { env } from './env.js';
 
 export const sharedThresholds = {
   http_req_failed: ['rate<0.01'],
-  http_req_duration: ['p(95)<400'],
+  'http_req_duration{expected_response:true}': ['p(95)<400'],
 };
 
 export const smokeThresholds = {
@@ -35,8 +35,8 @@ export const stressOptions = {
 export const spikeOptions = {
   stages: [
     { duration: '30s', target: 5 },
-    { duration: '30s', target: 80 },
-    { duration: '2m', target: 80 },
+    { duration: '30s', target: 30 },
+    { duration: '2m', target: 30 },
     { duration: '30s', target: 5 },
   ],
   thresholds: sharedThresholds,

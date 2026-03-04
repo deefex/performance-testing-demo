@@ -3,8 +3,14 @@ import { env } from '../lib/env.js';
 import { spikeOptions } from '../lib/options.js';
 import { get } from '../lib/http.js';
 
+/**
+ * k6 execution options for the spike profile.
+ */
 export const options = spikeOptions;
 
+/**
+ * Browsing flow used during sudden burst traffic stages.
+ */
 export default function () {
   const home = get('/', env.baseUrl);
 

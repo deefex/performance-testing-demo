@@ -1,0 +1,76 @@
+name: Performance Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      scenario:
+        description: "k6 scenario to run"
+        required: true
+        default: smoke
+        type: choice
+        options:
+          - smoke
+          - load
+          - stress
+          - spike
+  schedule:
+    - cron: "0 6 * * *"
+
+jobs:
+  run-k6:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      BASE_URL: http://localhost:8080/tools.descartes.teastore.webui
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Start TeaStore
+        run: docker compose -f docker-compose.teastore.yml up -d
+
+      - name: Wait for TeaStore WebUI
+        run: |
+          for i in {1..30}; do
+            if curl -fsS "${BASE_URL}/" >/dev/null; then
+              echo "TeaStore is ready"
+              exit 0
+            fi
+            echo "Waiting for TeaStore... (${i}/30)"
+            sleep 5
+          done
+          echo "TeaStore did not become ready in time"
+          docker compose -f docker-compose.teastore.yml logs --tail=200 webui
+          exit 1
+
+      - name: Setup k6
+        uses: grafana/setup-k6-action@v1
+
+      - name: Select scenario
+        id: select
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "scenario=smoke" >> "$GITHUB_OUTPUT"
+          else
+            echo "scenario=${{ github.event.inputs.scenario }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run k6 scenario
+        run: ./scripts/run-k6.sh "${{ steps.select.outputs.scenario }}"
+
+      - name: Upload k6 summary artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-results-${{ github.run_id }}
+          path: results/*-summary.json
+          if-no-files-found: warn
+
+      - name: Dump TeaStore logs on failure
+        if: failure()
+        run: docker compose -f docker-compose.teastore.yml logs --tail=300
+
+      - name: Stop TeaStore
+        if: always()
+        run: docker compose -f docker-compose.teastore.yml down -v --remove-orphans

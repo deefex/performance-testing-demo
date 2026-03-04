@@ -31,13 +31,13 @@ cp .env.example .env
 2. Start TeaStore:
 
 ```bash
-docker compose -f docker-compose.teastore.yml up -d
+make teastore-up
 ```
 
 3. Verify it is running:
 
 ```bash
-docker compose -f docker-compose.teastore.yml ps
+make teastore-ps
 ```
 
 4. Open TeaStore:
@@ -118,13 +118,13 @@ What it does:
 Stop containers (keep DB data):
 
 ```bash
-docker compose -f docker-compose.teastore.yml down
+make teastore-down
 ```
 
 Stop and clear all state (including DB volume):
 
 ```bash
-docker compose -f docker-compose.teastore.yml down -v --remove-orphans
+make teastore-reset
 ```
 
 ## Optional Troubleshooting
@@ -132,12 +132,12 @@ docker compose -f docker-compose.teastore.yml down -v --remove-orphans
 View logs:
 
 ```bash
-docker compose -f docker-compose.teastore.yml logs -f webui
+make teastore-logs
 ```
 
 Restart from a clean state:
 
 ```bash
-docker compose -f docker-compose.teastore.yml down -v --remove-orphans
-docker compose -f docker-compose.teastore.yml up -d
+make teastore-reset
+make teastore-up
 ```

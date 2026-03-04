@@ -1,4 +1,4 @@
-.PHONY: teastore-up teastore-down teastore-reset teastore-ps k6-smoke k6-load k6-stress k6-spike k6-clear
+.PHONY: teastore-up teastore-down teastore-reset teastore-ps teastore-logs k6-smoke k6-load k6-stress k6-spike k6-clear
 
 teastore-up:
 	docker compose -f docker-compose.teastore.yml up -d
@@ -11,6 +11,9 @@ teastore-reset:
 
 teastore-ps:
 	docker compose -f docker-compose.teastore.yml ps
+
+teastore-logs:
+	docker compose -f docker-compose.teastore.yml logs -f webui
 
 k6-smoke:
 	./scripts/run-k6.sh smoke

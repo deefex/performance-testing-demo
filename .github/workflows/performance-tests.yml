@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Start TeaStore
         run: docker compose -f docker-compose.teastore.yml up -d
@@ -62,7 +62,7 @@ jobs:
 
       - name: Upload k6 summary artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: k6-results-${{ github.run_id }}
           path: results/*-summary.json

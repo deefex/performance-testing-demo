@@ -12,7 +12,7 @@ export const options = smokeOptions;
  * Minimal user journey used to verify TeaStore is available and responsive.
  */
 export default function () {
-  const home = get('/', env.baseUrl);
+  const home = get('/', env.baseUrl, { timeout: '10s' });
 
   check(home, {
     'home contains TeaStore': (r) => r.body && r.body.includes('TeaStore'),
